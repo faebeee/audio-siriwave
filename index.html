@@ -1,0 +1,85 @@
+<html>
+
+<head>
+    <style>
+        body {
+            background-color: #333;
+        }
+        
+        #siri-container {
+            width: 800px;
+            height: 600px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate3d(-50%, -50%, 0);
+        }
+        
+        #info {
+            color: #f7f7f7;
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translate3d(-50%, 0, 0);
+        }
+        
+        #copyright {
+            color: #f7f7f7;
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translate3d(-50%, 0, 0);
+        }
+        
+        a {
+            color: #ccc;
+        }
+    </style>
+    <script src="https://unpkg.com/siriwave/dist/siriwave.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.1.9/p5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.1.9/addons/p5.sound.js"></script>
+</head>
+
+<body>
+    <div id="info">Click to start</div>
+    <div id="siri-container"></div>
+    <div id="copyright">
+        Created by <a href="https://www.fabs.io">Fabs</a> with <a href="https://github.com/kopiro/siriwave">Siriwave</a> and <a href="https://p5js.org/">P5</a>
+    </div>
+
+    <script>
+        let mic;
+        const amplitue = 10;
+        let started = false;
+
+        const siriWave = new SiriWave({
+            container: document.getElementById("siri-container"),
+            width: 800,
+            height: 600,
+            speed: 0.2,
+            frequency: 1,
+            style: 'ios9',
+        });
+
+        function setup() {
+            mic = new p5.AudioIn();
+            mic.start();
+        }
+
+        function draw() {
+            if (!started) {
+                return;
+            }
+
+            const micLevel = mic.getLevel();
+            siriWave.setAmplitude(micLevel * amplitue);
+        }
+
+        function mousePressed() {
+            userStartAudio();
+            started = true;
+        }
+    </script>
+</body>
+
+</html>
